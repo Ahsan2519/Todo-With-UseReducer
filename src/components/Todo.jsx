@@ -49,7 +49,7 @@ const Todo = () => {
             onChange={(e) => setTodoVal(e.target.value)}
             className="w-full pl-[3%] text-[18px] md:text-[22px] text-[#989898] py-1 border-2 border-[#E6E6E6] capitalize outline-none "
           />
-          {todoTask.length <= 0 && empty && (
+          {empty && (
             <span className="absolute bottom-[-25px] text-red-600 font-[600]">
               *Please add todo
             </span>
