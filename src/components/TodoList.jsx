@@ -3,10 +3,8 @@ import React from "react";
 const TodoList = ({ dispatch, todoTask, setEditingIndex, setTodoVal }) => {
   const editTodo = (id) => {
     const index = todoTask.find((item) => item.id === id);
-    if (index.id === id) {
-      setTodoVal(index.todoValue);
-      setEditingIndex(id);
-    }
+    setTodoVal(index.todoValue);
+    setEditingIndex(index.id);
   };
 
   const completeHandler = (idx) =>
