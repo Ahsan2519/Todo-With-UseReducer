@@ -1,8 +1,10 @@
-import React, { useEffect, useReducer, useState } from "react";
-import { initialState, reducer } from "../reducer/TodoReducer";
+import React, { useEffect, useState } from "react";
 import TodoList from "./TodoList";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodos, deleteAlls, editTodo } from "../Actions/TodoActions";
 const Todo = () => {
-  const [todoTask, dispatch] = useReducer(reducer, initialState);
+  const TodoState = useSelector((state) => state);
+  const dispatch = useDispatch();
   const [todoVal, setTodoVal] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
   const [empty, setEmpty] = useState(false);
@@ -11,13 +13,10 @@ const Todo = () => {
     todoVal.trim()
       ? (() => {
           if (editingIndex) {
-            dispatch({
-              type: "editTodo",
-              payload: { id: editingIndex, todoValue: todoVal },
-            });
+            dispatch(editTodo(todoVal, editingIndex));
             setEditingIndex(null);
           } else {
-            dispatch({ type: "addTodo", payload: todoVal });
+            dispatch(addTodos(todoVal));
           }
           setTodoVal("");
           setEmpty(false);
@@ -26,12 +25,12 @@ const Todo = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("todovalue", JSON.stringify(todoTask));
-  }, [todoTask]);
+    localStorage.setItem("todovalue", JSON.stringify(TodoState));
+  }, [TodoState]);
 
   const deleteAll = () => {
     const deleteTodos = [];
-    dispatch({ type: "deleteAll", payload: deleteTodos });
+    dispatch(deleteAlls(deleteTodos));
   };
 
   return (
@@ -63,11 +62,10 @@ const Todo = () => {
         </button>
       </form>
       <TodoList
-        dispatch={dispatch}
-        todoTask={todoTask}
+        todoTask={TodoState}
         setTodoVal={setTodoVal}
         setEditingIndex={setEditingIndex}
-        setEmpty = {setEmpty}
+        setEmpty={setEmpty}
       />
       <button
         className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

@@ -1,10 +1,17 @@
+import {
+  Add_TODO,
+  DELETE_TODO,
+  EDIT_TODO,
+  DELETE_ALL_TODO,
+  COMPELETE_TODO,
+} from "../Actions/TodoActions";
 const storedValue = localStorage.getItem("todovalue");
 const initialTodo = storedValue ? JSON.parse(storedValue) : [];
 
 const initialState = initialTodo;
-const reducer = (state, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "addTodo":
+    case Add_TODO:
       return [
         ...state,
         {
@@ -13,10 +20,10 @@ const reducer = (state, action) => {
           completed: false,
         },
       ];
-    case "deleteTodo":
+    case DELETE_TODO:
       return state.filter((del) => del.id !== action.payload);
 
-    case "editTodo":
+    case EDIT_TODO:
       return state.map((edit) =>
         edit.id === action.payload.id
           ? (() => ({
@@ -27,14 +34,14 @@ const reducer = (state, action) => {
           : edit
       );
 
-    case "completeTodo":
+    case COMPELETE_TODO:
       return state.map((item) =>
         item.id === action.payload
           ? (() => ({ ...item, completed: !item.completed }))()
           : item
       );
 
-    case "deleteAll":
+    case DELETE_ALL_TODO:
       return (state = action.payload);
 
     default:
@@ -42,4 +49,4 @@ const reducer = (state, action) => {
   }
 };
 
-export { storedValue, initialState, reducer };
+export default reducer;
