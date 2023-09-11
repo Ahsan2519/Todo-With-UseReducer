@@ -1,7 +1,8 @@
 import React from "react";
 
-const TodoList = ({ dispatch, todoTask, setEditingIndex, setTodoVal }) => {
+const TodoList = ({ dispatch, todoTask, setEditingIndex, setTodoVal, setEmpty }) => {
   const editTodo = (id) => {
+    setEmpty(false)
     const index = todoTask.find((item) => item.id === id);
     setTodoVal(index.todoValue);
     setEditingIndex(index.id);
